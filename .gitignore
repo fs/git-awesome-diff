@@ -1,6 +1,5 @@
 .bundle
 .yard
-bin
 vendor
 Gemfile.lock
 
