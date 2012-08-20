@@ -7,7 +7,8 @@ class Formatter
     @removed = removed_objects
   end
 
-  def print(format = 'pretty')
+  def print(format, *args)
+    puts "Showing diff between #{args[0]} and #{args[1]}\n"
     case format
     when /pretty/ then pretty_print
     when /simple/ then simple_print

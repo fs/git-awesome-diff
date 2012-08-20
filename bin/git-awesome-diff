@@ -15,14 +15,16 @@ command :make_diff do |c|
   c.example 'description', 'command example'
   c.option '--format TYPE', 'Some switch that does something'
   c.option '--path PATH', 'Path to the repo'
+  c.option '--exclude REGEXP', 'Exclude files from processing'
   c.action do |args, options|
     options.default \
       :path    => Dir.pwd,
       :format  => 'pretty'
-    gad = GitAwesomeDiff.new(File.expand_path(options.path))
+    gad = GitAwesomeDiff.new(File.expand_path(options.path), options.exclude)
     if gad.valid?
       gad.diff! *args
-      Formatter.new(gad.added_objects, gad.removed_objects).print(options.format)
+      Formatter.new(gad.added_objects, gad.removed_objects)
+               .print(options.format, *args)
     else
       puts gad.errors.join("\n")
     end
