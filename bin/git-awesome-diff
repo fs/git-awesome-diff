@@ -1,0 +1,30 @@
+$:.unshift File.join(File.dirname(__FILE__), '../lib')
+require 'rubygems'
+require 'formatter'
+require 'commander/import'
+require 'git_awesome_diff'
+
+program :version, '1.0'
+program :description, 'Git awesome diff tool'
+
+default_command :make_diff
+command :make_diff do |c|
+  c.syntax = 'git awesome-diff [ref1] [ref2]'
+  c.summary = 'prints diff'
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--format TYPE', 'Some switch that does something'
+  c.option '--path PATH', 'Path to the repo'
+  c.action do |args, options|
+    options.default \
+      :path    => Dir.pwd,
+      :format  => 'pretty'
+    gad = GitAwesomeDiff.new(File.expand_path(options.path))
+    if gad.valid?
+      gad.diff! *args
+      Formatter.new(gad.added_objects, gad.removed_objects).print(options.format)
+    else
+      puts gad.errors.join("\n")
+    end
+  end
+end
