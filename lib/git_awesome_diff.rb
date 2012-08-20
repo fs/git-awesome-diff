@@ -21,7 +21,7 @@ class GitAwesomeDiff
   end
 
   def diff!(*refs)
-    ref1 = parse_rev(refs.shift)
+    ref1 = parse_rev(refs.shift || 'HEAD~1')
     ref2 = parse_rev(refs.shift || 'master')
     registry = []
 
