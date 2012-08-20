@@ -3,10 +3,10 @@ require 'yard'
 require 'active_support/all'
 
 class GitAwesomeDiff
-  attr_reader :path, :repo, :head, :errors, :added_objects, :removed_objects
+  attr_reader :path, :exclude_paths, :repo, :head, :errors, :added_objects, :removed_objects
 
-  def initialize(path)
-    @path = path
+  def initialize(path, exclude_paths = '')
+    @path, @exclude_paths = path, exclude_paths
 
     load_repo
 
@@ -16,31 +16,8 @@ class GitAwesomeDiff
     save_head
   end
 
-  def load_repo
-    Dir.chdir(path)
-    @repo = Grit::Repo.new(path)
-  end
-
-  def validate!
-    @errors = []
-    @errors << 'Repositiry should be clean' unless repo_clean?
-    @errors << 'HEAD is unknow' unless head_present?
-  end
-
   def valid?
     errors.blank?
-  end
-
-  def repo_clean?
-    repo.status.changed.merge(repo.status.added).merge(repo.status.deleted).blank?
-  end
-
-  def head_present?
-   repo.head.present?
-  end
-
-  def save_head
-    @head = repo.head.name
   end
 
   def diff!(*refs)
@@ -66,6 +43,31 @@ class GitAwesomeDiff
     self
   end
 
+  private
+
+  def load_repo
+    Dir.chdir(path)
+    @repo = Grit::Repo.new(path)
+  end
+
+  def validate!
+    @errors = []
+    @errors << 'Repositiry should be clean' unless repo_clean?
+    @errors << 'HEAD is unknow' unless head_present?
+  end
+
+  def repo_clean?
+    repo.status.changed.merge(repo.status.added).merge(repo.status.deleted).blank?
+  end
+
+  def head_present?
+   repo.head.present?
+  end
+
+  def save_head
+    @head = repo.head.name
+  end
+
   def parse_rev(rev)
     (repo.git.native 'rev-parse', {verify: true}, rev).chop
   end
@@ -75,8 +77,12 @@ class GitAwesomeDiff
   end
 
   def generate_yardoc
+    options = ['--no-output', '--no-stats', '--no-save', '--quiet']
+    options << "--exclude=#{exclude_paths}" if exclude_paths.present?
+    options << path
+
     YARD::Registry.clear
-    YARD::CLI::Yardoc.run('--no-output', '--no-stats', '--no-save', '--quiet', '--exclude vendor', path)
+    YARD::CLI::Yardoc.run(*options)
     YARD::Registry.all.map {|o| o.path}
   end
 end
