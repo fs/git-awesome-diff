@@ -1,4 +1,5 @@
 require 'active_support/all'
+require 'colorize'
 
 class Formatter
 
@@ -8,7 +9,7 @@ class Formatter
   end
 
   def print(format, *args)
-    puts "Showing diff between #{args[0]} and #{args[1]}\n"
+    puts "Showing diff between #{args[0]} and #{args[1]}\n".colorize(:black)
     case format
     when /pretty/ then pretty_print
     when /simple/ then simple_print
@@ -18,8 +19,15 @@ class Formatter
   private
 
   def pretty_print
-    puts "Added objects:\n\t#{@added.join("\n\t")}\n\n" if @added.present?
-    puts "Removed objects:\n\t#{@removed.join("\n\t")}\n\n" if @removed.present?
+    if @added.present?
+      puts "Added objects:"
+      puts "\t" + @added.join("\n\t").colorize(:green)
+    end
+    puts
+    if @removed.present?
+      puts "Removed objects:"
+      puts "\t" + @removed.join("\n\t").colorize(:red)
+    end
   end
 
   def simple_print
