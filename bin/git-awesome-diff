@@ -2,9 +2,11 @@
 
 $:.unshift File.join(File.dirname(__FILE__), '../lib')
 require 'rubygems'
-require 'formatter'
+require 'git-awesome-diff/formatter'
 require 'commander/import'
-require 'git_awesome_diff'
+require 'git-awesome-diff'
+
+include GitAwesomeDiff
 
 program :version, '1.0'
 program :description, 'Git awesome diff tool'
@@ -22,7 +24,7 @@ command :make_diff do |c|
     options.default \
       :path    => Dir.pwd,
       :format  => 'pretty'
-    gad = GitAwesomeDiff.new(File.expand_path(options.path), options.exclude)
+    gad = AwesomeDiff.new(File.expand_path(options.path), options.exclude)
     if gad.valid?
       gad.diff!(*args)
       Formatter.new(gad.added_objects, gad.removed_objects)
