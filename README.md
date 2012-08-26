@@ -1,6 +1,6 @@
-# Git::Awesome::Diff
+# git-awesome-diff
 
-TODO: Write a gem description
+Object Oriented Diffing for Git
 
 ## Installation
 
@@ -18,7 +18,11 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    git awesome-diff ref1 ref2
+
+For example:
+
+    git awesome-diff HEAD~1 master
 
 ## Contributing
 
