@@ -1,4 +1,4 @@
-#!ruby -w
+#!/usr/bin/env ruby
 
 $:.unshift File.join(File.dirname(__FILE__), '../lib')
 require 'rubygems'
@@ -24,7 +24,7 @@ command :make_diff do |c|
       :format  => 'pretty'
     gad = GitAwesomeDiff.new(File.expand_path(options.path), options.exclude)
     if gad.valid?
-      gad.diff! *args
+      gad.diff!(*args)
       Formatter.new(gad.added_objects, gad.removed_objects)
                .print(options.format, *args)
     else
