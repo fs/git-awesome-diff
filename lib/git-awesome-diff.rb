@@ -55,8 +55,8 @@ module GitAwesomeDiff
 
     def validate!
       @errors = []
-      @errors << 'Repositiry should be clean' unless repo_clean?
-      @errors << 'HEAD is unknow' unless head_present?
+      @errors << 'Repository should be clean' unless repo_clean?
+      @errors << 'HEAD is unknown' unless head_present?
     end
 
     def repo_clean?
