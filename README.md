@@ -24,6 +24,10 @@ For example:
 
     git awesome-diff HEAD~1 master
 
+## Specs
+
+    bundle exec rake
+
 ## Contributing
 
 1. Fork it
