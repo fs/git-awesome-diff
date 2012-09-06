@@ -1,11 +1,5 @@
-require 'git-awesome-diff/version'
-require 'grit'
-require 'yard'
-require 'active_support/all'
-
 module GitAwesomeDiff
-
-  class AwesomeDiff
+  class Diff
     attr_reader :path, :exclude_paths, :repo, :head, :errors, :added_objects, :removed_objects
 
     def initialize(path, exclude_paths = '')

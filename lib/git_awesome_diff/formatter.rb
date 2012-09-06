@@ -1,9 +1,5 @@
-require 'active_support/all'
-require 'colorize'
-
 module GitAwesomeDiff
   class Formatter
-
     def initialize(added_objects, removed_objects)
       @added = added_objects
       @removed = removed_objects

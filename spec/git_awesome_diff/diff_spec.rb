@@ -1,10 +1,9 @@
-require File.expand_path('../../lib/git-awesome-diff.rb', __FILE__)
-include GitAwesomeDiff
+require 'spec_helper.rb'
 
-REPO_PATH = File.expand_path('./spec/git-slog')
+REPO_PATH = File.expand_path('spec/git-slog')
 
-describe AwesomeDiff do
-  let(:awesome_diff) { AwesomeDiff.new(REPO_PATH) }
+describe GitAwesomeDiff::Diff do
+  let(:awesome_diff) { GitAwesomeDiff::Diff.new(REPO_PATH) }
   subject { awesome_diff }
 
   its(:head) { should match 'master' }

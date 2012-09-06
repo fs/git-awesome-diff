@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    git-awesome-diff (0.0.1)
+    git_awesome_diff (0.0.1)
 
 GEM
   remote: http://rubygems.org/
@@ -40,7 +40,7 @@ DEPENDENCIES
   activesupport
   colorize
   commander
-  git-awesome-diff!
+  git_awesome_diff!
   grit
   rake
   rspec

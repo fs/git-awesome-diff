@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/git-awesome-diff/version', __FILE__)
+require File.expand_path('../lib/git_awesome_diff/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Max Prokopiev", "Timur Vafin", "FlatStack, LLC"]
   gem.email         = ["max-prokopiev@yandex.ru", "me@timurv.ru"]
   gem.description   = %q{Object Oriented Diffing for Git}
   gem.summary       = %q{Object Oriented Diffing for Git}
-  gem.homepage      = "https://github.com/fs/git-awesome-diff"
+  gem.homepage      = "https://github.com/fs/git_awesome_diff"
 
   gem.add_development_dependency "grit"
   gem.add_development_dependency "rake"
@@ -19,7 +19,7 @@ Gem::Specification.new do |gem|
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.name          = "git-awesome-diff"
+  gem.name          = "git_awesome_diff"
   gem.require_paths = ["lib"]
   gem.version       = GitAwesomeDiff::VERSION
 end
