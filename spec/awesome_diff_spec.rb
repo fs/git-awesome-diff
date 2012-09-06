@@ -1,21 +1,14 @@
 require File.expand_path('../../lib/git-awesome-diff.rb', __FILE__)
 include GitAwesomeDiff
 
+REPO_PATH = File.expand_path('./spec/git-slog')
+
 describe AwesomeDiff do
+  let(:awesome_diff) { AwesomeDiff.new(REPO_PATH) }
+  subject { awesome_diff }
 
-  REPO_PATH = File.expand_path('./spec/git-slog')
-
-  subject { AwesomeDiff.new(REPO_PATH) }
-
-  describe '#new' do
-    it 'should save current head' do
-      subject.head.should match 'master'
-    end
-
-    it 'should load repo' do
-      subject.repo.should be_kind_of Grit::Repo
-    end
-  end
+  its(:head) { should match 'master' }
+  its(:repo) { should be_kind_of Grit::Repo }
 
   describe '#valid' do
     context 'when there is no errors' do
@@ -33,9 +26,11 @@ describe AwesomeDiff do
 
       it { should_not be_valid }
 
-      it 'should have one error' do
-        subject.errors.count.should be_equal 1
-        subject.errors.first.should match 'Repository should be clean'
+      describe 'errors' do
+        subject { awesome_diff.errors }
+
+        it { should_not be_empty }
+        its(:first) { should match 'Repository should be clean' }
       end
     end
 
@@ -50,41 +45,49 @@ describe AwesomeDiff do
 
       it { should_not be_valid }
 
-      it 'should have one error' do
-        subject.errors.first.should match 'HEAD is unknown'
+      describe 'errors' do
+        subject { awesome_diff.errors }
+
+        it { should_not be_empty }
+        its(:first) { should match 'HEAD is unknown' }
       end
     end
   end
 
   describe '#diff!' do
     context 'when there are only added objects' do
-      before do
-        @diff = subject.diff!('HEAD~2', 'HEAD~3')
+      let(:diff) { awesome_diff.diff!('HEAD~2', 'HEAD~3') }
+
+      describe 'added object' do
+        subject { diff.added_objects }
+
+        it { should_not be_empty }
+        its(:first) { should match 'Test#second_method' }
       end
 
-      it 'should have added objects' do
-        @diff.added_objects.count.should be_equal 1
-        @diff.added_objects.first.should match 'Test#second_method'
-      end
+      describe 'removed objects' do
+        subject { diff.removed_objects }
 
-      it 'should not have removed objects' do
-        @diff.removed_objects.should be_empty
+        it { should be_empty }
       end
     end
 
     context 'when there are both added and removed objects' do
-      before do
-        @diff = subject.diff!('HEAD~1', 'master')
+      let(:diff) { awesome_diff.diff!('HEAD~1', 'master') }
+
+      describe 'added objects' do
+        subject { diff.added_objects }
+
+        it { should_not be_empty }
+        it { should == ['SecondClass', 'SecondClass#another', 'SecondClass#first_method', 'SecondClass#second'] }
       end
 
-      it 'should have added objects' do
-        @diff.added_objects.should == ['SecondClass', 'SecondClass#another', 'SecondClass#first_method', 'SecondClass#second']
-      end
+      describe 'removed objects' do
+        subject { diff.removed_objects }
 
-      it 'should have removed objects' do
-        @diff.removed_objects.should == ['AnotherClass', 'AnotherClass#another_method']
+        it { should_not be_empty }
+        it { should == ['AnotherClass', 'AnotherClass#another_method'] }
       end
     end
   end
-
 end
