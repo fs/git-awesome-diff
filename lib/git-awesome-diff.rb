@@ -1,4 +1,4 @@
-require "git-awesome-diff/version"
+require 'git-awesome-diff/version'
 require 'grit'
 require 'yard'
 require 'active_support/all'
