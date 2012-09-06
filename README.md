@@ -45,4 +45,4 @@ Credits
 -------
 
 Made by [Max Prokopiev](https://github.com/juggler), [Timur Vafin](https://github.com/timurvafin)
-in terms of HachDay @[FlatStack, LLC](http://www.flatstack.com)
+in terms of HackDay @[FlatStack, LLC](http://www.flatstack.com)
