@@ -2,7 +2,7 @@
 require File.expand_path('../lib/git-awesome-diff/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Max Prokopiev", "Timur Vafin"]
+  gem.authors       = ["Max Prokopiev", "Timur Vafin", "FlatStack, LLC"]
   gem.email         = ["max-prokopiev@yandex.ru", "me@timurv.ru"]
   gem.description   = %q{Object Oriented Diffing for Git}
   gem.summary       = %q{Object Oriented Diffing for Git}
