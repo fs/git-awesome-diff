@@ -1,9 +1,12 @@
 require 'spec_helper.rb'
 
-REPO_PATH = File.expand_path('spec/git-slog')
-
 describe GitAwesomeDiff::Diff do
-  let(:awesome_diff) { GitAwesomeDiff::Diff.new(REPO_PATH) }
+
+  before :all do
+    @repo_path = create_test_repo
+  end
+
+  let(:awesome_diff) { GitAwesomeDiff::Diff.new(@repo_path) }
   subject { awesome_diff }
 
   its(:head) { should match 'master' }
@@ -16,11 +19,11 @@ describe GitAwesomeDiff::Diff do
 
     context 'when repo is not clean' do
       before do
-        File.rename('1.rb', '2.rb')
+        File.rename('test.rb', '1.rb')
       end
 
       after do
-        File.rename('2.rb', '1.rb')
+        File.rename('1.rb', 'test.rb')
       end
 
       it { should_not be_valid }
@@ -35,11 +38,12 @@ describe GitAwesomeDiff::Diff do
 
     context 'when there is no HEAD' do
       before do
-        system('git checkout 12f6375 -q')
+        File.rename('.git/HEAD', '.git/HEAD_')
+        `touch .git/HEAD`
       end
 
       after do
-        system('git checkout master -q')
+        File.rename('.git/HEAD_', '.git/HEAD')
       end
 
       it { should_not be_valid }
@@ -55,13 +59,13 @@ describe GitAwesomeDiff::Diff do
 
   describe '#diff!' do
     context 'when there are only added objects' do
-      let(:diff) { awesome_diff.diff!('HEAD~2', 'HEAD~3') }
+      let(:diff) { awesome_diff.diff!('HEAD~3', 'HEAD~2') }
 
       describe 'added object' do
         subject { diff.added_objects }
 
         it { should_not be_empty }
-        its(:first) { should match 'Test#second_method' }
+        its(:first) { should match 'TestClass#first_method' }
       end
 
       describe 'removed objects' do
@@ -78,14 +82,14 @@ describe GitAwesomeDiff::Diff do
         subject { diff.added_objects }
 
         it { should_not be_empty }
-        it { should == ['SecondClass', 'SecondClass#another', 'SecondClass#first_method', 'SecondClass#second'] }
+        it { should == ['SecondClass', 'SecondClass#another_method', 'SecondClass#second_method', 'SecondClass#test_method'] }
       end
 
       describe 'removed objects' do
         subject { diff.removed_objects }
 
         it { should_not be_empty }
-        it { should == ['AnotherClass', 'AnotherClass#another_method'] }
+        it { should == ["TestClass", "TestClass#first_method", "TestClass#second_method"] }
       end
     end
   end
