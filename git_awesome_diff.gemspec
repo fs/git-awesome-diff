@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["max-prokopiev@yandex.ru", "me@timurv.ru"]
   gem.description   = %q{Object Oriented Diffing for Git}
   gem.summary       = %q{Object Oriented Diffing for Git}
-  gem.homepage      = "https://github.com/fs/git_awesome_diff"
+  gem.homepage      = "https://github.com/fs/git-awesome-diff"
 
   gem.add_development_dependency "grit"
   gem.add_development_dependency "rake"
